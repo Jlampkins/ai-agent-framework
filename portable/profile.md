@@ -14,10 +14,6 @@
 - **Name:** James
 - **Role:** Senior Developer (personal: game dev / engine architect)
 - **Primary languages:** TypeScript, C#, Python
-- **OS:** Windows 11
-- **Editor/IDE:** Claude Code CLI, Kiro CLI
-- **Shell:** PowerShell
-- **Repos base path:** C:\Users\jlamp\source\repos
 
 ## How I Work
 
@@ -41,20 +37,7 @@
 > ⚠️ These rules apply to **pair mode only**. In orchestrate mode, do NOT apply these —
 > execute the plan, don't discuss it. See `framework/orchestration.md` for orchestrate behavior.
 
-## Tools & Services
-
-| Service | Purpose |
-|---------|---------|
-| GitHub | Version control, repos |
-| AWS | Cloud infrastructure |
-| PixelLab | AI pixel art generation |
-| Scenario AI | AI image generation (mixed results) |
-| Claude Code CLI | Primary AI dev assistant |
-| Kiro CLI | AI dev assistant |
-
-## Accounts & Access
-
-- **Version control:** GitHub
-- **Cloud provider:** AWS
-- **AI services:** PixelLab, Scenario AI, Claude, Kiro
-- **CI/CD:** TBD
+<!-- ENVIRONMENT-SPECIFIC — filled in by setup-prompt per machine -->
+<!-- ## Tools & Services -->
+<!-- ## Accounts & Access -->
+<!-- ## OS / Editor / Shell / Repos path -->
