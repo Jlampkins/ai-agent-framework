@@ -24,6 +24,7 @@ One file is the entry point. It routes to everything else:
 ~/.ai/AGENTS.md (global — about YOU)
   → profile.md         "Who I am"
   → standards.md       "How I code"
+  → secrets-vault.md   "What I can access"
   → tasks/current.md   "What I'm doing now" → routes to active project(s)
   → orchestration      "How to work with me"
 
@@ -64,6 +65,7 @@ The agent creates its own config entry. One time, permanent.
 ├── AGENTS.md              # Entry point — agents read this first
 ├── profile.md             # Who you are, how you work
 ├── standards.md           # Coding standards & conventions
+├── secrets-vault.md       # Your credentials (NEVER committed)
 ├── tasks/
 │   └── current.md         # Active task — drives project routing
 ├── projects/
@@ -77,6 +79,7 @@ The agent creates its own config entry. One time, permanent.
         ├── AGENTS.md
         ├── profile.md
         ├── standards.md
+        ├── secrets-vault.md
         ├── task.md
         ├── project.md
         ├── repo-agents.md
@@ -91,7 +94,7 @@ The agent creates its own config entry. One time, permanent.
 
 | Layer | What | Changes | Where |
 |-------|------|---------|-------|
-| Identity | Who you are, preferences, tools | Rarely | `~/.ai/profile.md`, `~/.ai/standards.md` |
+| Identity | Who you are, preferences, tools, credentials | Rarely | `~/.ai/profile.md`, `~/.ai/standards.md`, `~/.ai/secrets-vault.md` |
 | Project | Architecture, conventions, APIs | Per project | Repo `AGENTS.md` + `~/.ai/projects/` |
 | Task | Current work, status, blockers | Per session | `~/.ai/tasks/current.md` |
 
@@ -131,6 +134,7 @@ This makes repos self-describing — anyone opening the project with any agent g
 
 ### What's personal (not shared):
 - `~/.ai/profile.md` — individual preferences
+- `~/.ai/secrets-vault.md` — credentials (NEVER committed)
 - `~/.ai/tasks/current.md` — what each person is doing
 - `~/.ai/projects/*.md` — personal notes, API access
 
@@ -180,6 +184,7 @@ Run this when your .ai/ files change and you need to sync a Tier 2 agent. It's n
 |------|-----------|-------------|
 | `profile.md` | Quarterly or on tool changes | You |
 | `standards.md` | When conventions change | You |
+| `secrets-vault.md` | When services added/removed/rotated | You |
 | `tasks/current.md` | Every session end | Agent (automatic) |
 | `projects/*.md` | When project context changes | You or agent |
 | Repo `AGENTS.md` | When architecture changes | Team (committed) |
