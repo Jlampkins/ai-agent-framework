@@ -164,7 +164,7 @@ Create `~/.ai/tasks/current.md` using `framework/templates/task.md` as the struc
 ## Step 8: Create Global AGENTS.md
 
 Now create the master entry point `~/.ai/AGENTS.md` that ties everything together:
-- Reference `profile.md`, `standards.md`, `secrets-registry.md`, `tasks/current.md`
+- Reference `profile.md`, `standards.md`, `secrets-vault.md`, `tasks/current.md`
 - Include orchestration rules (reference or inline from `framework/orchestration.md`)
 - List active projects with repo paths
 - Include session protocol (verify task at start, update at end)
@@ -244,8 +244,7 @@ You handle orchestration by breaking work into independent subtasks and running 
 
 - ALWAYS use sub-agents for parallel work — do NOT do everything sequentially yourself
 - Each sub-agent gets a clear, scoped task and returns only its findings
-- If a sub-agent fails after 2 attempts, try a different approach. After 3 failures, escalate to the user.
-- Before creating/modifying files based on results, present the plan and get approval (review gate)
+- Escalation and review gates: see `~/.ai/framework/orchestration.md` (canonical — do not restate here)
 ```
 
 **If Tier 2 (Cursor, Windsurf, Copilot):**

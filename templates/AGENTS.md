@@ -37,12 +37,30 @@ Read these files in order to understand who I am and how to work with me:
 - Present options when there are meaningful tradeoffs
 
 ### Orchestrate Mode (when triggered)
-- Break work into subtasks, execute independently
-- Present compiled results for review
-- Escalation: self-resolve 2x → pivot approach → escalate to me
-- Review gates: respect user-flagged checkpoints and auto-gate on irreversible/costly actions
 
-See `framework/orchestration.md` for full rules.
+**MANDATORY: When this mode is active, you MUST spawn sub-agents for parallel work. Do NOT analyze, implement, or research sequentially in the main thread. If the task has 3+ independent parts, spawn sub-agents. This is not optional.**
+
+Triggers (any of these activate orchestrate mode):
+- User says "orchestrate this," "go figure this out," "analyze," "research this"
+- Task has 3+ independent subtasks
+- Task involves analyzing a codebase, directory, or system
+- Task involves batch work or repetitive generation
+- Output is clearly defined (a report, files, comparison)
+
+**Size gate:** don't orchestrate just because a trigger word matched. If a single agent can reasonably hold the full scope in one pass (small repo, <50 files, single domain), just do it directly. Orchestrate when the scope exceeds what one agent can efficiently process, or when subtasks are truly independent and parallelism saves real time.
+
+When orchestrate mode is active:
+1. **Plan** — identify independent subtasks (2-30 seconds, not longer)
+2. **Spawn sub-agents** — one per independent subtask, running simultaneously
+   - Research/analysis: read-only sub-agents
+   - Implementation: full-access sub-agents
+3. **Compile** — gather all sub-agent results into unified output
+4. **Present for review** — show results before irreversible actions
+
+Rules:
+- Do NOT apply pair mode collaboration rules — just execute
+- Do NOT do the work yourself sequentially — ALWAYS delegate to sub-agents
+- Escalation, review gates, and mode-switching: see `framework/orchestration.md` (canonical — do not restate here)
 
 ## Session Protocol
 
@@ -73,6 +91,13 @@ This also applies when:
 - You sense the conversation is winding down
 
 **Do not ask permission to update the file. Just do it. Then confirm you've done it.**
+
+## Proactive Actions
+
+- If an active project's repo has no `AGENTS.md`, offer to create one after analysis
+- If a repo's `AGENTS.md` has drifted from the actual codebase (outdated architecture, missing key files, wrong conventions), flag the drift and offer to update it
+- If a sub-area is complex and undocumented, flag it and offer a sub-area `AGENTS.md`
+- If `tasks/current.md` references a project you haven't read yet, read its repo `AGENTS.md` before starting work
 
 ## Rules
 
