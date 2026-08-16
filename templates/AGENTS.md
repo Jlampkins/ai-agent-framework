@@ -15,7 +15,8 @@ Read these files in order to understand who I am and how to work with me:
 
 1. `profile.md` — my identity, preferences, tools
 2. `standards.md` — coding conventions and workflow
-3. `tasks/current.md` — what I'm currently working on
+3. `secrets-vault.md` — credentials for services (read when authenticating, NEVER output/log values)
+4. `tasks/current.md` — what I'm currently working on
 
 ## Active Projects
 
@@ -52,11 +53,23 @@ See `framework/orchestration.md` for full rules.
 4. **Verify my current task** — summarize where I left off and confirm before proceeding
 
 ### On Session End (or git push):
-Update `tasks/current.md` with:
-- What was accomplished
-- Where I left off (specific enough for any agent to continue)
+**THIS IS MANDATORY. DO NOT END A SESSION WITHOUT DOING THIS.**
+
+Before your final response in any session — whether the user says "we're done,"
+"that's it," "wrap up," "closing out," "bye," or ANY indication the session is ending —
+you MUST update `tasks/current.md` by writing to the file with:
+- What was accomplished this session
+- Where we left off (specific enough for any agent to continue)
 - New blockers or decisions
-- Session log entry with date
+- Checked/unchecked status items as appropriate
+- Session log entry with today's date
+
+This also applies when:
+- The user pushes code (git push)
+- A major milestone is completed
+- You sense the conversation is winding down
+
+**Do not ask permission to update the file. Just do it. Then confirm you've done it.**
 
 ## Rules
 

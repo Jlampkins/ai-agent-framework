@@ -59,7 +59,51 @@ Create `~/.ai/standards.md` from the answers using `framework/templates/standard
 
 ---
 
-## Step 4: Identify Active Project(s)
+## Step 4: Build Secrets Vault
+
+Ask the user:
+
+1. **What external services do you use that require API keys or tokens?** — cloud providers, AI services, databases, SaaS tools, issue trackers
+2. **For each one:** What's the env var name (or what would you call it)? Which project(s) use it?
+3. **Any that use CLI-managed auth instead?** (e.g., `gh auth login`, `aws configure`) — note those so agents know to use the CLI rather than a raw token.
+
+**Rules:**
+- **NEVER ask for actual key values.** Only collect: name, purpose, which project uses it.
+- If the user volunteers a value, do NOT store it. Say: "I'll note that this key exists, but I won't record the value here — you'll fill that in yourself."
+- Detect what you can: check for `.env` files (note which vars are defined without reading values), check `~/.aws/` existence, check if `gh auth status` works.
+
+Create `~/.ai/secrets-vault.md` from `framework/templates/secrets-vault.md` — populate the key names, purposes, and "Used By" columns based on the services identified. Leave the Value column blank.
+
+**After creating the file, guide the user on how to obtain each value:**
+
+For each entry in the vault, provide a brief instruction on where to get the value. Tailor to the service:
+
+- **GitHub:** "Run `gh auth token` to get your current token, or generate a new one at https://github.com/settings/tokens"
+- **Jira:** "Generate an API token at https://id.atlassian.net/manage-profile/security/api-tokens"
+- **AWS:** "Run `aws configure` to set up CLI auth, or find keys in IAM → Users → Security credentials"
+- **PixelLab:** "Find your API key in your PixelLab dashboard at https://pixellab.ai/dashboard"
+- **Azure DevOps:** "Generate a PAT at https://dev.azure.com/{org}/_usersSettings/tokens"
+- **Database connections:** "Check your cloud provider's console or ask your team lead for the connection string"
+- **Other services:** Look up the service's API/token documentation and provide the direct URL
+
+Format this as a checklist the user can work through:
+
+```
+To fill in your vault, grab these values:
+
+□ GITHUB_TOKEN → run `gh auth token` or https://github.com/settings/tokens
+□ JIRA_TOKEN → https://id.atlassian.net/manage-profile/security/api-tokens
+□ PIXELLAB_API_KEY → your PixelLab dashboard
+□ ...
+
+Then open ~/.ai/secrets-vault.md and paste each value into the Value column.
+```
+
+Tell the user: "Once you've filled these in, I'll be able to authenticate on your behalf when you ask me to push code, check tickets, review PRs, etc. You only do this once."
+
+---
+
+## Step 5: Identify Active Project(s)
 
 Ask the user:
 
@@ -77,7 +121,7 @@ Create `~/.ai/projects/<project-name>.md` using `framework/templates/project.md`
 
 ---
 
-## Step 5: Set Up Repo AGENTS.md
+## Step 6: Set Up Repo AGENTS.md
 
 For each active project repo, check if `<repo>/AGENTS.md` exists:
 
@@ -104,7 +148,7 @@ For each of: `.cursorrules`, `.github/copilot-instructions.md`, `CLAUDE.md`, `.w
 
 ---
 
-## Step 6: Create Current Task
+## Step 7: Create Current Task
 
 Ask the user:
 
@@ -117,10 +161,10 @@ Create `~/.ai/tasks/current.md` using `framework/templates/task.md` as the struc
 
 ---
 
-## Step 7: Create Global AGENTS.md
+## Step 8: Create Global AGENTS.md
 
 Now create the master entry point `~/.ai/AGENTS.md` that ties everything together:
-- Reference `profile.md`, `standards.md`, `tasks/current.md`
+- Reference `profile.md`, `standards.md`, `secrets-registry.md`, `tasks/current.md`
 - Include orchestration rules (reference or inline from `framework/orchestration.md`)
 - List active projects with repo paths
 - Include session protocol (verify task at start, update at end)
@@ -129,7 +173,7 @@ Use `framework/templates/AGENTS.md` as the structure.
 
 ---
 
-## Step 8: Register This Agent
+## Step 9: Register This Agent
 
 ### Self-detection
 
@@ -151,6 +195,7 @@ Create `~/.kiro/agents/default.json`:
     "file://<absolute-path>/.ai/AGENTS.md",
     "file://<absolute-path>/.ai/profile.md",
     "file://<absolute-path>/.ai/standards.md",
+    "file://<absolute-path>/.ai/secrets-vault.md",
     "file://<absolute-path>/.ai/tasks/current.md",
     "file://<absolute-path>/.ai/projects/<active-project>.md",
     "file://<absolute-path>/.ai/framework/orchestration.md"
@@ -235,7 +280,7 @@ files for other agents.
 
 ---
 
-## Step 9: Confirm Setup
+## Step 10: Confirm Setup
 
 Present a summary:
 
@@ -246,6 +291,7 @@ Created:
 - ~/.ai/AGENTS.md (entry point)
 - ~/.ai/profile.md (your identity)
 - ~/.ai/standards.md (coding conventions)
+- ~/.ai/secrets-vault.md (credentials — fill in values manually, NEVER commit)
 - ~/.ai/tasks/current.md (current task)
 - ~/.ai/projects/<name>.md (project notes)
 - <repo>/AGENTS.md (project context) [if created]
