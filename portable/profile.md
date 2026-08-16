@@ -13,7 +13,6 @@
 
 - **Name:** James
 - **Role:** Senior Developer (personal: game dev / engine architect)
-- **Primary languages:** TypeScript, C#, Python
 
 ## How I Work
 
@@ -38,6 +37,7 @@
 > execute the plan, don't discuss it. See `framework/orchestration.md` for orchestrate behavior.
 
 <!-- ENVIRONMENT-SPECIFIC — filled in by setup-prompt per machine -->
+<!-- ## Primary Languages (detected from codebase) -->
 <!-- ## Tools & Services -->
 <!-- ## Accounts & Access -->
 <!-- ## OS / Editor / Shell / Repos path -->
