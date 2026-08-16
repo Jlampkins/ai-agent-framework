@@ -45,6 +45,10 @@ Planner breaks work into subtasks. Workers execute independently (potentially in
 - Learning when you want a *summary/cheat sheet*, not a *tutorial*
 - Any task where you'd tell a human "go figure this out and come back to me"
 
+### Size Gate
+
+Don't orchestrate just because a task matches a trigger word or phrase above. If a single agent can reasonably hold the full scope in one pass (small repo, <50 files, single domain), just do it directly — orchestration overhead isn't free. Orchestrate when the scope exceeds what one agent can efficiently process in its context, or when the subtasks are truly independent and running them in parallel saves real time.
+
 ### Orchestrated Intellectual Work
 
 Orchestration is not just for mechanical tasks. Complex thinking can be orchestrated when you want results delivered rather than co-created:
