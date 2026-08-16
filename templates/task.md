@@ -50,10 +50,3 @@
 
 <!-- Things discovered during this task that might affect future work.
      Gotchas, API quirks, patterns that worked well, etc. -->
-
----
-
-## Session Log
-
-<!-- Agent appends an entry at session end. Format: -->
-<!-- - YYYY-MM-DD: [what was accomplished, where left off] -->
