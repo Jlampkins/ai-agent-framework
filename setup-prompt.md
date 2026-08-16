@@ -146,6 +146,7 @@ Create `~/.kiro/agents/default.json`:
 {
   "name": "default",
   "description": "Default agent with personal AI configuration loaded",
+  "tools": ["*"],
   "resources": [
     "file://<absolute-path>/.ai/AGENTS.md",
     "file://<absolute-path>/.ai/profile.md",
@@ -158,12 +159,48 @@ Create `~/.kiro/agents/default.json`:
 ```
 Then run: `kiro-cli settings chat.defaultAgent default`
 
-This sets your custom agent as the default so it loads your context regardless of which directory you launch Kiro from.
+This sets your custom agent as the default so it loads your context regardless of which directory you launch Kiro from. The `"tools": ["*"]` ensures the agent can write back to your task file on session end.
 
 **If Claude Code:**
 Create `~/.claude/CLAUDE.md` containing:
 ```markdown
 Read and follow ~/.ai/AGENTS.md
+
+MANDATORY ON EVERY SESSION START (before your first response to the user):
+1. Read all files referenced in ~/.ai/AGENTS.md (profile, standards, tasks/current.md, active project files)
+2. Verify the current task — summarize where they left off
+3. Confirm before proceeding
+
+Do this even if the user's first message is casual ("hey", "hello", "what's up").
+Do NOT just say "What are we working on?" — load context first, then show you know.
+```
+
+Create `~/.claude/agents/orchestrator.md` containing:
+```markdown
+---
+name: orchestrator
+description: Handles orchestration tasks by spawning parallel sub-agents. Delegate to this agent when the user triggers orchestrate mode (says "orchestrate this", requests parallel analysis, or the task has 3+ independent subtasks with clearly defined output).
+---
+
+# Orchestrator Agent
+
+You handle orchestration by breaking work into independent subtasks and running them in parallel via sub-agents.
+
+## When you are invoked:
+
+1. **Plan first** — identify the independent subtasks (things that don't depend on each other)
+2. **Spawn sub-agents** — one per independent subtask, running simultaneously
+   - Research/analysis sub-agents: read-only access
+   - Implementation sub-agents: full editing access
+3. **Compile results** — gather all sub-agent outputs into a unified deliverable
+4. **Present for review** — show the compiled results before taking irreversible actions
+
+## Rules:
+
+- ALWAYS use sub-agents for parallel work — do NOT do everything sequentially yourself
+- Each sub-agent gets a clear, scoped task and returns only its findings
+- If a sub-agent fails after 2 attempts, try a different approach. After 3 failures, escalate to the user.
+- Before creating/modifying files based on results, present the plan and get approval (review gate)
 ```
 
 **If Tier 2 (Cursor, Windsurf, Copilot):**

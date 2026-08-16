@@ -60,10 +60,26 @@ Orchestration is not just for mechanical tasks. Complex thinking can be orchestr
 
 ### Agent behavior in Orchestrate Mode:
 - State the plan before executing (what will be done, how many subtasks)
+- **Use sub-agents for parallel work** — do NOT do everything sequentially in the main thread
 - Execute without asking for input at every step
 - Compile results into a clear, reviewable format
 - Report what was done, what succeeded, what failed
 - Present for review — don't assume approval
+
+### How to Orchestrate (implementation by agent)
+
+| Agent | Mechanism | How |
+|-------|-----------|-----|
+| Kiro CLI | `subagent` tool | Spawn parallel worker stages with `depends_on` for sequencing |
+| Claude Code | Sub-agents | Spawn sub-agents for parallel tasks — each gets scoped context, own tools, separate context window |
+| Both | Plan → Fan out → Compile → Present | Break into independent subtasks, run in parallel where possible, gather results, present unified output |
+
+**Example — "Analyze a codebase":**
+- Sub-agent 1: Analyze `src/engine/` — architecture, patterns, key files
+- Sub-agent 2: Analyze `src/api/` — endpoints, middleware, auth
+- Sub-agent 3: Analyze `infrastructure/` — IaC, deployment
+- Sub-agent 4: Analyze `tests/` — coverage, patterns, frameworks
+- Parent: Compile findings into root AGENTS.md + sub-area recommendations
 
 ---
 
