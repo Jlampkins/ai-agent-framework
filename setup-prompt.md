@@ -131,18 +131,70 @@ Use `framework/templates/AGENTS.md` as the structure.
 
 ## Step 8: Register This Agent
 
-Add `~/.ai/AGENTS.md` to this agent's global configuration so future sessions auto-load it:
+### Self-detection
 
-| Agent | Action |
-|-------|--------|
-| Kiro CLI | Create `~/.kiro/steering/bootstrap.md` containing: `Read and follow ~/.ai/AGENTS.md` |
-| Cursor | Instruct user to add to Settings → Rules → User Rules |
-| GitHub Copilot | Instruct user to add to VS Code settings |
-| Windsurf | Create/edit `~/.windsurfrules` |
-| Claude Desktop | Instruct user to add to project custom instructions |
-| ChatGPT | Instruct user to paste into Custom Instructions |
+First, determine what agent you are:
+- If you have access to `.kiro/` config → you're Kiro CLI
+- If you have access to `~/.claude/` config → you're Claude Code
+- If unclear, ask: "Which AI agent am I running as? (Kiro, Claude Code, Cursor, Windsurf, Copilot, ChatGPT, other)"
 
-For agents where you can directly create the file, do it. For agents requiring manual UI steps, provide exact instructions.
+### Register yourself
+
+**If Kiro CLI:**
+Create `~/.kiro/agents/default.json`:
+```json
+{
+  "name": "default",
+  "description": "Default agent with personal AI configuration loaded",
+  "resources": [
+    "file://<absolute-path>/.ai/AGENTS.md",
+    "file://<absolute-path>/.ai/profile.md",
+    "file://<absolute-path>/.ai/standards.md",
+    "file://<absolute-path>/.ai/tasks/current.md",
+    "file://<absolute-path>/.ai/projects/<active-project>.md",
+    "file://<absolute-path>/.ai/framework/orchestration.md"
+  ]
+}
+```
+Then run: `kiro-cli settings chat.defaultAgent default`
+
+This sets your custom agent as the default so it loads your context regardless of which directory you launch Kiro from.
+
+**If Claude Code:**
+Create `~/.claude/CLAUDE.md` containing:
+```markdown
+Read and follow ~/.ai/AGENTS.md
+```
+
+**If Tier 2 (Cursor, Windsurf, Copilot):**
+Create a build script (`~/.ai/build-inline-config.ps1` or `.sh`) that concatenates
+AGENTS.md + profile.md + standards.md + tasks/current.md into the agent's config format.
+Run it once now, and inform the user: "Re-run this script when your .ai/ files change."
+
+**If ChatGPT:**
+Tell the user: "Paste the following into Settings → Custom Instructions" and output
+the concatenated content of AGENTS.md + profile.md + standards.md.
+
+### Register other agents
+
+After registering yourself, ask:
+"Do you use any other AI agents I should configure? (Kiro, Claude Code, Cursor, Windsurf, Copilot, ChatGPT)"
+
+For each one the user names, create the appropriate config using the rules above.
+
+---
+
+## Adding a New Agent Later
+
+If a user tells any already-configured agent "Register [new agent] in my AI config",
+the agent should:
+
+1. Determine the new agent's tier (file-access or inline-only)
+2. Create the appropriate config file or build script
+3. Confirm: "Registered [agent]. It will load your context on next session."
+
+This works from any Tier 1 agent since they have filesystem access to create config
+files for other agents.
 
 ---
 

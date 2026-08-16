@@ -143,16 +143,34 @@ This makes repos self-describing — anyone opening the project with any agent g
 
 ## Agent Compatibility
 
-| Agent | Global config | Repo config |
-|-------|--------------|-------------|
-| Kiro CLI | `~/.kiro/steering/bootstrap.md` | Reads `AGENTS.md` directly |
-| Cursor | Settings → Rules → User Rules | `.cursorrules` → AGENTS.md |
-| GitHub Copilot | VS Code setting | `.github/copilot-instructions.md` → AGENTS.md |
-| Windsurf | `~/.windsurfrules` | `.windsurfrules` → AGENTS.md |
-| Claude Code | `~/.claude/` config | `CLAUDE.md` → AGENTS.md |
-| Claude Desktop | Project custom instructions | Upload/paste AGENTS.md |
-| ChatGPT | Custom Instructions | Paste content (no file access) |
-| Any API | System message | Include AGENTS.md in request |
+### Tier 1: File-Access Agents (pointer works — single source of truth)
+
+These agents can read external files. One config entry, never duplicated.
+
+| Agent | Setup | How it works |
+|-------|-------|-------------|
+| Kiro CLI | `.kiro/agents/default.json` with `resources: ["file://~/.ai/AGENTS.md", ...]` | Loads file content into context via resource system |
+| Claude Code | `~/.claude/CLAUDE.md` with "Read and follow ~/.ai/AGENTS.md" | Has filesystem access, follows the instruction |
+
+### Tier 2: Inline-Only Agents (need content copied in)
+
+These agents can't read external files. Content must be inline in their config.
+
+| Agent | Config location | Workaround |
+|-------|----------------|------------|
+| Cursor | `.cursorrules` / Settings → Rules | Concatenate .ai/ files into the config |
+| Windsurf | `.windsurfrules` | Same — inline copy |
+| GitHub Copilot | `.github/copilot-instructions.md` | Same — inline copy |
+| ChatGPT | Custom Instructions | Paste content manually |
+
+**For Tier 2**, a build script can concatenate your source-of-truth files:
+
+```powershell
+# build-inline-config.ps1
+Get-Content ~/.ai/AGENTS.md, ~/.ai/profile.md, ~/.ai/standards.md, ~/.ai/tasks/current.md | Set-Content .cursorrules
+```
+
+Run this when your .ai/ files change and you need to sync a Tier 2 agent. It's not automatic — Tier 2 agents are second-class citizens in this system by design.
 
 ---
 
