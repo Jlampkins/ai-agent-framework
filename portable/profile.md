@@ -19,6 +19,7 @@
 - **Response style:** Concise, direct, show the thing. Explain the WHY when it matters — don't hand-hold.
 - **Learning style:** Show code first, explain after. Examples over theory.
 - **Decision making:** Riff on ideas together before implementing. Present the shape, agree, then build.
+- **Design philosophy:** Build modular, reusable systems. Solve the specific problem but design the solution generically enough that it works for others. Prefer factories and composable patterns over one-off implementations. Extract shared logic so multiple services/codebases can implement without reinventing the wheel.
 - **Dependencies:** Minimize. Avoid if possible — less upkeep. When used, keep at latest versions.
 
 ## Collaboration Style (Pair Mode Only)
