@@ -58,11 +58,14 @@ See `framework/orchestration.md` for full rules.
 Before your final response in any session — whether the user says "we're done,"
 "that's it," "wrap up," "closing out," "bye," or ANY indication the session is ending —
 you MUST update `tasks/current.md` by writing to the file with:
-- What was accomplished this session
 - Where we left off (specific enough for any agent to continue)
-- New blockers or decisions
+- New decisions (added to "Decisions Made" — so future agents don't re-propose rejected approaches)
+- New learnings (added to "Recent Learnings" — traps to avoid, things that didn't work and why)
+- New blockers if any
 - Checked/unchecked status items as appropriate
-- Session log entry with today's date
+
+**Do NOT add session log entries.** Git commits are the history. The task file stays lean —
+only current state and distilled conclusions that prevent future agents from repeating mistakes.
 
 This also applies when:
 - The user pushes code (git push)
