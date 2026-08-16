@@ -1,0 +1,5 @@
+# Environment-specific files that shouldn't be committed
+.env
+*.local
+tasks/
+projects/
